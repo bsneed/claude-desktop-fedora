@@ -4,8 +4,21 @@ set -e
 # Update this URL when a new version of Claude Desktop is released
 CLAUDE_DOWNLOAD_URL="https://storage.googleapis.com/osprey-downloads-c02f6a0d-347c-492b-a752-3e0651722e97/nest-win-x64/Claude-Setup-x64.exe"
 
-# Check for Fedora-based system
-if [ ! -f "/etc/fedora-release" ]; then
+# Inclusive check for Fedora-based system
+is_fedora_based() {
+    if [ -f "/etc/fedora-release" ]; then
+        return 0
+    fi
+    
+    if [ -f "/etc/os-release" ]; then
+        grep -qi "fedora" /etc/os-release && return 0
+    fi
+    
+    # Not a Fedora-based system
+    return 1
+}
+
+if ! is_fedora_based; then
     echo "❌ This script requires a Fedora-based Linux distribution"
     exit 1
 fi
