@@ -39,10 +39,10 @@ sudo ./build-fedora.sh
 
 # Install the package
 # Check what file was actually created
-ls build/electron-app/x86_64/
+ls build/electron-app/$(uname -m)/
 
 # Install using the correct filename (example - your version may differ)
-sudo dnf install build/electron-app/x86_64/claude-desktop-*.rpm
+sudo dnf install build/electron-app/$(uname -m)/claude-desktop-*.rpm
 
 # Download standalone Electron
 # The installed Claude Desktop will have GTK conflicts with your system Electron. Download a clean Electron binary

@@ -134,7 +134,8 @@ if ! check_command "electron"; then
 fi
 
 PACKAGE_NAME="claude-desktop"
-ARCHITECTURE="amd64"
+ARCHITECTURE=$(uname -m)
+DISTRIBUTION=$(rpm --eval %{?dist})
 MAINTAINER="Claude Desktop Linux Maintainers"
 DESCRIPTION="Claude Desktop for Linux"
 
@@ -375,7 +376,7 @@ Release:        1%{?dist}
 Summary:        Claude Desktop for Linux
 License:        Proprietary
 URL:            https://www.anthropic.com
-BuildArch:      x86_64
+BuildArch:      ${ARCHITECTURE}
 Requires:       nodejs >= 12.0.0, npm, p7zip
 
 %description
@@ -453,7 +454,7 @@ EOF
 echo "📦 Building RPM package..."
 mkdir -p "${WORK_DIR}"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
-RPM_FILE="$(pwd)/x86_64/claude-desktop-${VERSION}-1.fc41.$(uname -m).rpm"
+RPM_FILE="$(pwd)/${ARCHITECTURE}/claude-desktop-${VERSION}-1${DISTRIBUTION}.$(uname -m).rpm"
 if rpmbuild -bb \
     --define "_topdir ${WORK_DIR}" \
     --define "_rpmdir $(pwd)" \
